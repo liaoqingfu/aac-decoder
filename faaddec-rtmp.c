@@ -475,6 +475,12 @@ int main(int argc, char* argv[])
      printf("rtmpUrl %s, %s\n", rtmpUrl, rtmpPushOpt->url);
     // 打开连接
 
+#if 1       // 必须设置该段代码，否则解码16k、8k的采样率时不对
+    NeAACDecConfigurationPtr conf = NeAACDecGetCurrentConfiguration(decoder);
+    conf->dontUpSampleImplicitSBR = 1;
+    NeAACDecSetConfiguration(decoder, conf);
+#endif
+
     //initialize decoder
     NeAACDecInit(decoder, frame, size, &samplerate, &channels);
 
